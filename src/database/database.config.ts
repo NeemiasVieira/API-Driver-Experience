@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Admin } from 'src/modules/admins/admin.model';
 import { Client } from 'src/modules/clients/client.model';
 import { Reserve } from 'src/modules/reserves/reserve.model';
 import { Car } from 'src/modules/cars/car.model';
@@ -23,7 +22,7 @@ export const databaseProviders = [
           }
         }
       });
-      sequelize.addModels([Admin, Client, Reserve, Car])
+      sequelize.addModels([Client, Reserve, Car])
       await sequelize.sync();
       try {
         await sequelize.authenticate();
