@@ -1,6 +1,20 @@
 import { Column, Model, Table, HasMany, DataType } from 'sequelize-typescript';
 import { Reserve } from '../reserves/reserve.model';
 
+export interface CarType {
+  model: string,
+  plateNumber: string,
+  year: number,
+  isAutomatic: boolean,
+  carType: string;
+  color: string,
+  fuelEfficiency: number,
+  dailyRate: number,
+  images: string[],
+  features: { [key: string]: boolean },
+  reserves?: Reserve[]
+}
+
 @Table
 export class Car extends Model {
   @Column
@@ -34,7 +48,7 @@ export class Car extends Model {
   features: { [key: string]: boolean }; // Exemplo: { airConditioning: true, bluetooth: false }
 
   @HasMany(() => Reserve)
-  reserves: Reserve[];
+  reserves?: Reserve[];
 
   @Column
   get status(): string {

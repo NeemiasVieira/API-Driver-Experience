@@ -32,7 +32,7 @@ export class Client extends Model {
   phoneNumber: string; // Número de telefone do cliente
 
   @HasMany(() => Reserve)
-  reserves: Reserve[];
+  reserves?: Reserve[];
 
   // ... (outros campos, se houver)
 }
