@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { CreateCarController } from './use-cases/create-car/create-car.controller';
 import { CreateCarService } from './use-cases/create-car/create-car.service';
+import { ListAvailableCarsController } from './use-cases/list-available-cars/list-available-cars.controller';
+import { ListAvailableCarsService } from './use-cases/list-available-cars/list-available-cars.service';
+
 
 @Module({
-  controllers: [CreateCarController],
-  providers: [CreateCarService]
+  controllers: [CreateCarController, ListAvailableCarsController],
+  providers: [CreateCarService, ListAvailableCarsService]
 })
 export class CarsModule {}

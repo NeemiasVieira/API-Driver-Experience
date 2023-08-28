@@ -1,20 +1,6 @@
 import { Column, Model, Table, HasMany, DataType } from 'sequelize-typescript';
 import { Reserve } from '../reserves/reserve.model';
 
-export interface CarType {
-  model: string,
-  plateNumber: string,
-  year: number,
-  isAutomatic: boolean,
-  carType: string;
-  color: string,
-  fuelEfficiency: number,
-  dailyRate: number,
-  images: string[],
-  features: { [key: string]: boolean },
-  reserves?: Reserve[]
-}
-
 @Table
 export class Car extends Model {
   @Column
@@ -44,17 +30,31 @@ export class Car extends Model {
   @Column(DataType.ARRAY(DataType.STRING))
   images: string[]; // Array de URLs das imagens
 
-  @Column('json')
-  features: { [key: string]: boolean }; // Exemplo: { airConditioning: true, bluetooth: false }
+  @Column(DataType.ARRAY(DataType.STRING))
+  features: string[];
 
   @HasMany(() => Reserve)
-  reserves?: Reserve[];
+  reserves?: Reserve[] = [];
 
   @Column
-  get status(): string {
-    if (this.reserves.some(reserve => reserve.startDate <= new Date() && new Date() <= reserve.endDate)) {
-      return 'alugado';
-    }
-    return 'disponível';
+get status(): string {
+  const reservedReserves = this.reserves.filter(reserve => reserve.startDate <= new Date() && new Date() <= reserve.endDate);
+
+  if (reservedReserves.length > 0) {
+    const statusDetails = reservedReserves.map(reserve => {
+      const startDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(reserve.startDate);
+      const endDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(reserve.endDate);
+      const startTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(reserve.startDate);
+      const endTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(reserve.endDate);
+      
+      return `Reserved on days ${startDateFormatted} from ${endDateFormatted} until ${startTimeFormatted} até as ${endTimeFormatted}`;
+    }).join(', ');
+
+    return `Reserved on dates: ${statusDetails}`;
   }
+
+  return 'Disponível';
+}
+
+  
 }

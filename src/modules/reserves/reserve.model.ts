@@ -2,6 +2,15 @@ import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescrip
 import { Car } from '../cars/car.model';
 import { Client } from '../clients/client.model';
 
+export interface ReserveType {
+  clientId: number,
+  carId: number,
+  startDate: Date,
+  endDate: Date,
+  totalCost: number,
+  status: string,  
+}
+
 @Table
 export class Reserve extends Model {
   @ForeignKey(() => Client)
