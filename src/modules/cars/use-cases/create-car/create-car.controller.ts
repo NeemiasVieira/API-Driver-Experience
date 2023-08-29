@@ -1,16 +1,16 @@
 import { Body, Controller, HttpException, Post } from '@nestjs/common';
 import { CreateCarService } from './create-car.service';
 import { CreateCarDto } from './create-car-dto';
+import { Car } from '../../car.model';
 
-@Controller('create-car')
+@Controller('cars')
 export class CreateCarController {
 
-    constructor(private readonly appservice: CreateCarService ){}
+    constructor(private readonly appservice: CreateCarService) { }
 
-    @Post()
-    async createCar(@Body() car : CreateCarDto) : Promise<string>{
-        const result = await this.appservice.createCar(car);
-        return result;
-        
+    @Post('/create')
+    async createCar(@Body() car: CreateCarDto): Promise<Car> {
+        const createdCar = await this.appservice.createCar(car);
+        return createdCar;
     }
 }

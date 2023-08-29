@@ -1,16 +1,6 @@
 import { Column, Model, Table, HasMany } from 'sequelize-typescript';
 import { Reserve } from '../reserves/reserve.model';
 
-export interface UserClient {
-    username: string;
-    email: string;
-    password: string;
-    driverLicenseNumber: string;
-    fullName: string;
-    phoneNumber: string;
-    reserves: Reserve[]; 
-  }
-
 @Table
 export class Client extends Model {
   @Column
@@ -26,14 +16,13 @@ export class Client extends Model {
   driverLicenseNumber: string;
 
   @Column
-  fullName: string; // Nome completo do cliente
+  fullName: string;
 
   @Column
-  phoneNumber: string; // Número de telefone do cliente
+  phoneNumber: string;
 
   @HasMany(() => Reserve)
   reserves: Reserve[] = [];
 
-  // ... (outros campos, se houver)
 }
 

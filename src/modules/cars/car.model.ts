@@ -37,11 +37,14 @@ export class Car extends Model {
   reserves?: Reserve[] = [];
 
   @Column
-get status(): string {
-  const reservedReserves = this.reserves.filter(reserve => new Date(reserve.startDate) <= new Date() && new Date() <= new Date(reserve.endDate));
+  get status(): string {
+  const confirmedReserves = this.reserves.filter(reserve => new Date(reserve.startDate) <= new Date() && new Date() <= new Date(reserve.endDate));
 
-  if (reservedReserves.length > 0) {
-    const statusDetails = reservedReserves.map(reserve => {
+  if (confirmedReserves.length > 0) {
+
+      //Check the other non-conflicting bookings the car has
+
+      const statusDetails = confirmedReserves.map(reserve => {
       const startDate = new Date(reserve.startDate);
       const endDate = new Date(reserve.endDate);
       const startDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(startDate);
@@ -49,13 +52,13 @@ get status(): string {
       const startTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(startDate);
       const endTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(endDate);
       
-      return `Reserved on days ${startDateFormatted} from ${endDateFormatted} until ${startTimeFormatted} até as ${endTimeFormatted}`;
+      return `Reserved on days ${startDateFormatted} from ${endDateFormatted} until ${startTimeFormatted} ultil ${endTimeFormatted}`;
     }).join(', ');
 
     return `Reserved on dates: ${statusDetails}`;
   }
 
-  return 'Disponível';
+  return 'Available';
 }
 
   

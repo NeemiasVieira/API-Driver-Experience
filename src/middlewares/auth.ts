@@ -6,8 +6,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer ', '');
+  use(request: Request, response: Response, next: NextFunction) {
+    // Take the token
+    const token = request.headers.authorization?.replace('Bearer ', '');
 
     if (token) {
       try {
@@ -18,15 +19,18 @@ export class AuthMiddleware implements NestMiddleware {
 
         const subject = decoded.sub;
 
-        req['user'] = {decoded, subject}; // Armazenar os dados do usuário no request para uso posterior
+        // Saving the data in request to future uses
+
+        request['user'] = {decoded, subject}; 
         next();
+
       } catch (error) {
-        // Tratar o erro de validação do token aqui, por exemplo, retornando um status 401
-        return res.status(401).json({ message: 'Token inválido' });
+        // Case the token is invalid
+        return response.status(401).json({ message: 'Invalid Token' });
       }
     } else {
-      // Caso o token não seja fornecido, retornar um status 401
-      return res.status(401).json({ message: 'Token não fornecido' });
+      // Case the token was not provided
+      return response.status(401).json({ message: 'Token is required' });
     }
   }
 }

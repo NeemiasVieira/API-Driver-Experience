@@ -4,6 +4,7 @@ import { Reserve } from 'src/modules/reserves/reserve.model';
 import { Car } from 'src/modules/cars/car.model';
 import pg from 'pg';
 
+//Database config
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
@@ -15,20 +16,24 @@ export const databaseProviders = [
         username: process.env.USER,
         password: process.env.PASSWORD,
         database: 'postgres',
-        dialectModule: pg, //Necessário para o deploy na vercel
-        dialectOptions: { //Necessário para usar o servidor Postgre no Azure
+        dialectModule: pg, //Required for deploy using vercel
+        dialectOptions: { //Required to use a PostgreSQL database on Azure
           ssl: {
             require: true,
           }
         }
       });
-      sequelize.addModels([Client, Reserve, Car])
+
+      //Load Models from project
+      sequelize.addModels([Client, Reserve, Car])      
       await sequelize.sync();
+
+      //Test database connection
       try {
         await sequelize.authenticate();
-        console.log('Conexão com o banco de dados estabelecida com sucesso 🚀');
-      } catch (erro) {
-        console.error('Conexão com o banco de dados falhou', erro);
+        console.log('Database connection successfully established 🚀');
+      } catch (error) {
+        console.error('Database connection failed', error);
       }
     },
   },

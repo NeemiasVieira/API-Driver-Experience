@@ -6,7 +6,9 @@ import { HttpException } from '@nestjs/common';
 export class GetCarByIdService {
 
     async getCarById(id: number) : Promise<Car>{
+
         const car = await Car.findOne({where: {id}});
+        
         if(!car){
             throw new HttpException("Car not found", 404);
         }
