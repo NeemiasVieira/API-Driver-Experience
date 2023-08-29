@@ -3,15 +3,15 @@ import { CreateReserveService } from './create-reserve.service';
 import { Reserve } from '../../reserve.model';
 import { CreateReserveDto } from './create-reserve-dto';
 
-@Controller('create-reserve')
+@Controller('reserves')
 export class CreateReserveController {
-    constructor(private readonly appservice: CreateReserveService){}
+    constructor(private readonly appservice: CreateReserveService) {}
 
-    
-    @Post()
-        async createReserve(@Body() reserve: CreateReserveDto , @Request() req : any) : Promise<Reserve>{
-            const userId = Number(req.user.subject);
-            return await this.appservice.createReserve(userId, reserve);
-        }
+    @Post('/create')
+    async createReserve(@Body() reserve: CreateReserveDto, @Request() req: any): Promise<Reserve> {
+        //Require userID from JWT Token
+        const userId = Number(req.user.subject);
+        return await this.appservice.createReserve(userId, reserve);
+    }
 
 }

@@ -1,7 +1,6 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateReserveDto{
-
     @IsNotEmpty()
     @IsNumber()
     carId: number;
@@ -13,5 +12,4 @@ export class CreateReserveDto{
     @IsNotEmpty()
     @IsString()
     endDate: string;
-
 }
