@@ -38,14 +38,16 @@ export class Car extends Model {
 
   @Column
 get status(): string {
-  const reservedReserves = this.reserves.filter(reserve => reserve.startDate <= new Date() && new Date() <= reserve.endDate);
+  const reservedReserves = this.reserves.filter(reserve => new Date(reserve.startDate) <= new Date() && new Date() <= new Date(reserve.endDate));
 
   if (reservedReserves.length > 0) {
     const statusDetails = reservedReserves.map(reserve => {
-      const startDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(reserve.startDate);
-      const endDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(reserve.endDate);
-      const startTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(reserve.startDate);
-      const endTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(reserve.endDate);
+      const startDate = new Date(reserve.startDate);
+      const endDate = new Date(reserve.endDate);
+      const startDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(startDate);
+      const endDateFormatted = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(endDate);
+      const startTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(startDate);
+      const endTimeFormatted = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' }).format(endDate);
       
       return `Reserved on days ${startDateFormatted} from ${endDateFormatted} until ${startTimeFormatted} até as ${endTimeFormatted}`;
     }).join(', ');

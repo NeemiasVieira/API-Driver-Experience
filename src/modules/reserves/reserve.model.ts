@@ -12,10 +12,10 @@ export class Reserve extends Model {
   carId: number;
 
   @Column
-  startDate: Date;
+  startDate: string;
 
   @Column
-  endDate: Date;
+  endDate: string;
 
   @Column 
   totalDays: number;
