@@ -24,6 +24,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('/listAvailableCars', '/create-reserve', '/reserves'); 
+      .forRoutes('/listAvailableCars', '/create-reserve', '/reserves', '/reserves/delete/:id'); 
   }
 }
