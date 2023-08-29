@@ -1,16 +1,6 @@
 import { Column, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Car } from '../cars/car.model';
 import { Client } from '../clients/client.model';
-
-export interface ReserveType {
-  clientId: number,
-  carId: number,
-  startDate: Date,
-  endDate: Date,
-  totalCost: number,
-  status: string,  
-}
-
 @Table
 export class Reserve extends Model {
   @ForeignKey(() => Client)
@@ -27,13 +17,16 @@ export class Reserve extends Model {
   @Column
   endDate: Date;
 
-  @Column
-  totalCost: number; // Custo Total da Reserva
+  @Column 
+  totalDays: number;
 
   @Column
-  status: string; // Status da Reserva (pendente, confirmada, cancelada, etc.)
+  totalCost: number;
 
-  // ... (outros campos, se houver)
+  @Column
+  status: string; 
+
+
 
   @BelongsTo(() => Client)
   client: Client;

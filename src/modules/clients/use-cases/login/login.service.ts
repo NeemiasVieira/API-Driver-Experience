@@ -19,7 +19,7 @@ export class LoginService {
         if(!passwordIsCorrect) throw new HttpException("User or password is incorrect", 400);
 
         const payload = {email};
-        const token = this.jwtService.sign({}, {secret: process.env.JWT_SECRET, subject: email} );
+        const token = this.jwtService.sign({}, {secret: process.env.JWT_SECRET, subject: String(userExists.id)} );
 
         return `User ${userOnDataBase.username} successfully logged in with token ${token}`;
     }

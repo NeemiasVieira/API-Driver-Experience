@@ -15,7 +15,10 @@ export class AuthMiddleware implements NestMiddleware {
           secret: process.env.JWT_SECRET,
           algorithms: ['HS256'],
         });
-        req['user'] = decoded; // Armazenar os dados do usuário no request para uso posterior
+
+        const subject = decoded.sub;
+
+        req['user'] = {decoded, subject}; // Armazenar os dados do usuário no request para uso posterior
         next();
       } catch (error) {
         // Tratar o erro de validação do token aqui, por exemplo, retornando um status 401
