@@ -9,6 +9,7 @@ dotenv.config();
 //Starts the server
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors(); 
   
   app.useGlobalPipes(new ValidationPipe({
     disableErrorMessages: false, //Allows customization of messages in class-validator
