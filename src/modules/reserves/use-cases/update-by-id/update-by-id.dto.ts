@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsDateString } from "class-validator";
 
 export class UpdateReserveByIdDto{
 
@@ -7,10 +7,10 @@ export class UpdateReserveByIdDto{
     reserveId: number;
 
     @IsNotEmpty()
-    @IsString()
+    @IsDateString()
     startDate: string;
     
     @IsNotEmpty()
-    @IsString()
+    @IsDateString()
     endDate: string;
 }

@@ -9,7 +9,10 @@ export class UpdateByIdService {
 
         const listAvailableCars = new ListAvailableCarsService();
         const availableCars = await listAvailableCars.listAvailableCars(startDate, endDate, reserveId);
+
         const oldReserve = await Reserve.findOne({ where: { id: reserveId } });
+        if(!oldReserve) throw new HttpException("Reserve doen't exists", 404);
+
         const oldCar = await Car.findOne({ where: { id: oldReserve.carId } });
 
         const OldCarIsAvailable = availableCars.find((car: Car) => car.id === oldCar.id);

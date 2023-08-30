@@ -3,25 +3,26 @@ import { Reserve } from '../../reserve.model';
 import { Client } from 'src/modules/clients/client.model';
 import { Car } from 'src/modules/cars/car.model';
 import { CreateReserveDto } from './create-reserve-dto';
+import { ListAvailableCarsService } from 'src/modules/cars/use-cases/list-available-cars/list-available-cars.service';
 @Injectable()
 export class CreateReserveService {
     async createReserve(userId: number, reserve: CreateReserveDto): Promise<Reserve> {
 
         const client = await Client.findOne({ where: { id: userId } });
         const car = await Car.findOne({ where: { id: reserve.carId } });
-
+        
         if (!client || !car) {
             throw new HttpException('Client or car not found', 404);
         }
 
-        let startDate: Date;
-        let endDate: Date;
-        try {
-            startDate = new Date(reserve.startDate);
-            endDate = new Date(reserve.endDate);
-        } catch {
-            throw new HttpException("Dates must be a string in the format ISO 8601", 400);
-        }
+        const listAvailableCars = new ListAvailableCarsService();
+        const availableCars = await listAvailableCars.listAvailableCars(reserve.startDate, reserve.endDate);
+        const carIsAvailable = availableCars.find((car: Car) => car.id === reserve.carId);
+
+        if(!carIsAvailable) throw new HttpException("The car is not available in the selected period", 451);
+        
+        const startDate: Date = new Date(reserve.startDate);
+        const endDate: Date = new Date(reserve.endDate);       
 
         //Calculating the period of rent
         const periodInMilliSeconds = Math.abs(endDate.getTime() - startDate.getTime());

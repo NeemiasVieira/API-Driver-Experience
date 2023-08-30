@@ -8,19 +8,10 @@ export class ListAvailableCarsService {
   //Receives an optional parameter to assist the reservation update route, ensuring that its own reservation is not considered
   async listAvailableCars(initialDate: string, finalDate: string, myReserveId: number = -1): Promise<Object[]> {
 
-    //Ensures inputs are dates
-    let initialDate1: Date;
-    let finalDate1: Date;
-
-    try {
-      initialDate1 = new Date(initialDate);
-      finalDate1 = new Date(finalDate);
-    } catch {
-      throw new HttpException("Dates must be a string in the format ISO 8601", 400);
-    }
+    const initialDate1: Date = new Date(initialDate);
+    const finalDate1: Date = new Date(finalDate);    
 
     const carsAvailable: Car[] = [];
-
     const cars = await Car.findAll({ include: Reserve });
 
     //Load the reserves of cars

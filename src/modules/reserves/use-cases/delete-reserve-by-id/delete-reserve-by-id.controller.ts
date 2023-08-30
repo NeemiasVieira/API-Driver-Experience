@@ -9,7 +9,7 @@ export class DeleteReserveByIdController {
     @Delete(':id')
     async deleteReserveById(@Param('id') id: number, @Res() res: Response){
         await this.appservice.deleteReserveById(id);
-        res.status(201).send();
+        res.status(204).send();
         
     }
 }
