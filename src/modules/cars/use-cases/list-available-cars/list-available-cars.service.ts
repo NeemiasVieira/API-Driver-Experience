@@ -1,4 +1,4 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Car } from '../../car.model';
 import { Reserve } from 'src/modules/reserves/reserve.model';
 
