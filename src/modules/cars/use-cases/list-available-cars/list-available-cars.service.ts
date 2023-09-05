@@ -13,16 +13,14 @@ export class ListAvailableCarsService {
   //Receives an optional parameter to assist the reservation update route, ensuring that its own reservation is not considered
   async listAvailableCars(initialDate: string, finalDate: string, myReserveId: number = -1, query? : QueryModel): Promise<Object[]> {
 
-
-
     const initialDate1: Date = new Date(initialDate);
     const finalDate1: Date = new Date(finalDate);    
 
     const carsAvailable: Car[] = [];
     let cars: Car[];
 
-    if(query) cars = await Car.findAll({where: {model: {[Op.like]: `%${query}%`}}, include: Reserve });
-    if(!query) cars = await Car.findAll({include: Reserve});
+    if (query) cars = await Car.findAll({ where: { model: {[Op.iLike]: `%${query}%` }}, include: Reserve });
+    if (!query) cars = await Car.findAll({include: Reserve});
 
     //Load the reserves of cars
     for (const car of cars) {
