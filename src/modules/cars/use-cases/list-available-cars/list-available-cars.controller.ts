@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Query, Res } from '@nestjs/common';
 import { ListAvailableCarsService } from './list-available-cars.service';
 import { ListAvailableCarsDto } from './list-available-cars-dto';
 import { Response } from 'express';
@@ -7,8 +7,9 @@ import {
     ApiResponse,
     ApiTags,
   } from '@nestjs/swagger';
+import { QueryModel } from './list-available-cars.service';
 
-  @ApiTags("Cars")
+@ApiTags("Cars")
 @Controller('cars')
 export class ListAvailableCarsController {
     constructor(private readonly appservice: ListAvailableCarsService) { }
@@ -19,9 +20,9 @@ export class ListAvailableCarsController {
         status: 200,
         description: 'Returns an array containing the list of available cars',
     })
-    async listAvailableCars(@Body() carSearch: ListAvailableCarsDto, @Res() res: Response) {
+    async listAvailableCars(@Body() carSearch: ListAvailableCarsDto, @Res() res: Response, @Query('model') query: QueryModel) {
         const { initialDate, finalDate } = carSearch;
-        const response = await this.appservice.listAvailableCars(initialDate, finalDate);
+        const response = await this.appservice.listAvailableCars(initialDate, finalDate, -1, query);
         res.status(200).send(response)
     }
 }

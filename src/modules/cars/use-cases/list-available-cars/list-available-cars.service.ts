@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Car } from '../../car.model';
 import { Reserve } from 'src/modules/reserves/reserve.model';
+import { Op } from 'sequelize';
+
+export interface QueryModel{
+  model: string;
+}
 
 @Injectable()
 export class ListAvailableCarsService {
 
   //Receives an optional parameter to assist the reservation update route, ensuring that its own reservation is not considered
-  async listAvailableCars(initialDate: string, finalDate: string, myReserveId: number = -1): Promise<Object[]> {
+  async listAvailableCars(initialDate: string, finalDate: string, myReserveId: number = -1, query? : QueryModel): Promise<Object[]> {
+
+
 
     const initialDate1: Date = new Date(initialDate);
     const finalDate1: Date = new Date(finalDate);    
 
     const carsAvailable: Car[] = [];
-    const cars = await Car.findAll({ include: Reserve });
+    let cars: Car[];
+
+    if(query) cars = await Car.findAll({where: {model: {[Op.like]: `%${query}%`}}, include: Reserve });
+    if(!query) cars = await Car.findAll({include: Reserve});
 
     //Load the reserves of cars
     for (const car of cars) {
