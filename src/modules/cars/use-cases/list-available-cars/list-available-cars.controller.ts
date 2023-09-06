@@ -6,6 +6,7 @@ import {
     ApiOperation,
     ApiResponse,
     ApiTags,
+    ApiQuery
   } from '@nestjs/swagger';
 import { QueryModel } from './list-available-cars.service';
 
@@ -16,6 +17,7 @@ export class ListAvailableCarsController {
 
     @Post('listAvailables')
     @ApiOperation({summary: "Lists the cars available in the period searched "})
+    @ApiQuery({ name: 'model', required: false, type: String, description: 'Search using a model of car' })
     @ApiResponse({
         status: 200,
         description: 'Returns an array containing the list of available cars',

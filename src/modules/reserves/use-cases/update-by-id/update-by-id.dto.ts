@@ -9,7 +9,8 @@ export class UpdateReserveByIdDto {
 
   @ApiProperty({
     description: 'The new start date for the reservation (in ISO date string format)',
-    example: '2023-09-04T12:00:00Z',
+    format: 'date',
+    example: '2023-11-29T00:00:01Z',
   })
   @IsNotEmpty()
   @IsDateString()
@@ -17,7 +18,8 @@ export class UpdateReserveByIdDto {
 
   @ApiProperty({
     description: 'The new end date for the reservation (in ISO date string format)',
-    example: '2023-09-06T12:00:00Z',
+    format: 'date',
+    example: '2023-11-29T00:00:01Z',
   })
   @IsNotEmpty()
   @IsDateString()

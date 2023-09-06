@@ -19,7 +19,7 @@ export class CreateReserveService {
         const availableCars = await listAvailableCars.listAvailableCars(reserve.startDate, reserve.endDate);
         const carIsAvailable = availableCars.find((car: Car) => car.id === reserve.carId);
 
-        if(!carIsAvailable) throw new HttpException("The car is not available in the selected period", 451);
+        if(!carIsAvailable) throw new HttpException("The car is not available in the selected period", 409);
         
         const startDate: Date = new Date(reserve.startDate);
         const endDate: Date = new Date(reserve.endDate);       

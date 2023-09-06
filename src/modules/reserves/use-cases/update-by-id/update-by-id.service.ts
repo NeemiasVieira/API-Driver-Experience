@@ -17,7 +17,7 @@ export class UpdateByIdService {
 
         const OldCarIsAvailable = availableCars.find((car: Car) => car.id === oldCar.id);
         if (!OldCarIsAvailable) {
-            throw new HttpException("Your car is not available in this period!", 451);
+            throw new HttpException("Your car is not available in this period!", 409);
         }
 
         oldReserve.set({

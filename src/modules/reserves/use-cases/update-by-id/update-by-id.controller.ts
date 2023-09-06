@@ -26,7 +26,7 @@ export class UpdateByIdController {
         description: "Reserve doen't exists",
     })
     @ApiResponse({
-        status: 451,
+        status: 409,
         description: "Your car is not available in this period!",
     })
     async updateReserveById(@Body() body : UpdateReserveByIdDto) : Promise<Reserve>{

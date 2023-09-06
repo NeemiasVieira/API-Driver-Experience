@@ -25,6 +25,10 @@ export class CreateReserveController {
         status: 404,
         description: 'Client or car not found',
     })
+    @ApiResponse({
+        status: 409,
+        description: "The car is not available in the selected period"
+    })
 
     async createReserve(@Body() reserve: CreateReserveDto, @Request() req: any): Promise<Reserve> {
         //Require userID from JWT Token
