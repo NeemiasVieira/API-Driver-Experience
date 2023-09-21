@@ -2,6 +2,18 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { ListAvailableCarsService } from 'src/modules/cars/use-cases/list-available-cars/list-available-cars.service';
 import { Reserve } from '../../reserve.model';
 import { Car } from 'src/modules/cars/car.model';
+
+const countDays = (startDate: string, endDate: string) => {
+
+  const date1 = new Date(startDate);
+  const date2 = new Date(endDate);
+  const diferencaEmMilissegundos = Math.abs(date2.getTime() - date1.getTime());
+  const diferencaEmDias = Math.ceil(diferencaEmMilissegundos / (1000 * 60 * 60 * 24));
+
+  return diferencaEmDias;
+  }
+  
+  
 @Injectable()
 export class UpdateByIdService {
 
@@ -22,7 +34,9 @@ export class UpdateByIdService {
 
         oldReserve.set({
             startDate,
-            endDate
+            endDate,
+            totalDays: countDays(startDate, endDate),
+            totalCost: (countDays(startDate, endDate) * oldCar.dailyRate)
         })
         const updatedReserve = await oldReserve.save();
 
